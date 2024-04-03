@@ -14,35 +14,35 @@ export class AppComponent {
   exceldata: any[] = []
   constructor(private fileUploadService: FileUploadService) {}
 
-  // onFileSelected(event: any) {
-  //   const file: File = event.target.files[0];
-  //   const newfile: File = this.modifyAndExportData(file);
-  //   if (newfile) {
-  //     this.fileUploadService.uploadFile(file).subscribe(
-  //       response => {
-  //         console.log('File uploaded successfully:', response);
-  //         // Handle response from the server
-  //       },
-  //       error => {
-  //         console.error('Error uploading file:', error);
-  //         // Handle error
-  //       }
-  //     );
-  //   }
-  //   // if (file) {
-  //   //   this.readFile(file).then((excelData) => {
-  //   //     console.log(excelData);
-  //   //     // Handle Excel data here
-  //   //     // this.exceldata = this.modifyData(excelData)
-  //   //     this.exportToExcel(excelData, 'modified_file');
-  //   //   });
-  //   // }
-  // }
   onFileSelected(event: any) {
-    const file: File = event.target.files[0];
-    if (file) {
-      this.modifyAndExportData(file).then((newfile: File) => {
-        this.fileUploadService.uploadFile(newfile).subscribe(
+    this.file = event.target.files[0];
+  }
+// // modify from UI
+
+//   onUpload() {
+//     if (this.file) {
+//       this.modifyAndExportData(this.file).then((newfile: File) => {
+//         this.fileUploadService.uploadFile(newfile).subscribe(
+//           response => {
+//             console.log('File uploaded successfully:', response);
+//             // Handle response from the server
+//           },
+//           error => {
+//             console.error('Error uploading file:', error);
+//             // Handle error
+//           }
+//         );
+//       }).catch(error => {
+//         console.error('Error modifying and exporting file:', error);
+//         // Handle error
+//       });
+//     }
+//   }
+
+// modify from Backend
+  onUpload() {
+    if (this.file) {
+        this.fileUploadService.uploadFile(this.file).subscribe(
           response => {
             console.log('File uploaded successfully:', response);
             // Handle response from the server
@@ -50,12 +50,7 @@ export class AppComponent {
           error => {
             console.error('Error uploading file:', error);
             // Handle error
-          }
-        );
-      }).catch(error => {
-        console.error('Error modifying and exporting file:', error);
-        // Handle error
-      });
+          });
     }
   }
 

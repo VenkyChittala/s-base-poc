@@ -13,6 +13,6 @@ export class FileUploadService {
     const formData: FormData = new FormData();
     formData.append('file', file, file.name);
     // Adjust the URL according to your API endpoint
-    return this.http.post<any>('http://localhost:3000/upload', formData);
+    return this.http.post<any>('http://localhost:8080/upload', formData);
   }
 }
