@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { FileUploadService } from './file-upload.service';
+import { MatDialog } from '@angular/material/dialog';
+import { InfoDialogComponent } from './info-dialog/info-dialog.component';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +14,7 @@ export class AppComponent {
   title = 's-base-poc';
   file: File | null = null;
   exceldata: any[] = []
-  constructor(private fileUploadService: FileUploadService) {}
+  constructor(private fileUploadService: FileUploadService, private dialog: MatDialog) {}
 
   onFileSelected(event: any) {
     this.file = event.target.files[0];
@@ -40,19 +42,28 @@ export class AppComponent {
 //   }
 
 // modify from Backend
-  onUpload() {
-    if (this.file) {
-        this.fileUploadService.uploadFile(this.file).subscribe(
-          response => {
-            console.log('File uploaded successfully:', response);
-            // Handle response from the server
-          },
-          error => {
-            console.error('Error uploading file:', error);
-            // Handle error
+onUpload() {
+  if (this.file) {
+    this.fileUploadService.uploadFile(this.file).subscribe(
+      (response: any) => {
+        console.log('File uploaded successfully:', response);
+        // Check if the response contains a 'path' property
+        if (response.path) {
+          this.dialog.open(InfoDialogComponent, {
+            data: { message: 'File uploaded successfully', header: 'Success' },
           });
-    }
+          // Handle successful response
+        } else {
+          console.error('Error uploading file:', response);
+          // Handle error
+        }
+      },
+      error => {
+        console.error('Error uploading file:', error);
+        // Handle error
+      });
   }
+}
 
   async readFile(file: File): Promise<any> {
     return new Promise((resolve, reject) => {
